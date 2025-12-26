@@ -1,0 +1,20 @@
+name: Auto Screenshot
+on:
+  schedule:
+    - cron: '0 0 * * *' # 每天凌晨執行一次 (UTC時間)
+  workflow_dispatch: # 也可以手動點擊執行
+jobs:
+  screenshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install puppeteer
+      - name: Run screenshot
+        run: node screenshot.js
+      - name: Commit and Push
+        run: |
+          git config --global user.name "AutoBot"
+          git add schedule.png
+          git commit -m "Update schedule"
+          git push
